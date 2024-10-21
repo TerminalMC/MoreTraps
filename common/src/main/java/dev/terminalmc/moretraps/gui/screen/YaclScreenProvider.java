@@ -230,6 +230,7 @@ public class YaclScreenProvider {
         screen.finishOrSave();
         screen.onClose(); // In case finishOrSave doesn't close it.
         YACLScreen newScreen = (YACLScreen)ConfigScreenProvider.getConfigScreen(parent);
+        newScreen.init(Minecraft.getInstance(), screen.width, screen.height);
         try {
             newScreen.tabNavigationBar.selectTab(tab, false);
         } catch (IndexOutOfBoundsException e) {
