@@ -9,13 +9,13 @@
   "contributors": [$mod_contributors_list],
   "license": "${mod_license}",
 
-  "environment": "${mod_environment}",
+  "environment": "*",
 
   "provides": [],
 
   "entrypoints": {
-    "main": [],
-    "client": ["${mod_group}.${mod_id}.${mod_name}Fabric"],
+    "main": ["${mod_group}.${mod_id}.${mod_name}Fabric"],
+    "client": [],
     "server": [],
     "modmenu": ["${mod_group}.${mod_id}.gui.screen.ModMenuIntegration"]
   },
@@ -36,7 +36,7 @@
 
   "recommends": {
     "modmenu": [$modmenu_versions_fabric_list],
-    "cloth-config": [$clothconfig_versions_fabric_list]
+    "yacl": [$yacl_versions_fabric_list]
   },
 
   "suggests": {},

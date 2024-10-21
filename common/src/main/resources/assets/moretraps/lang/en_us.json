@@ -1,0 +1,37 @@
+{
+  "moretraps.name": "MoreTraps",
+
+  "modmenu.descriptionTranslation.moretraps": "Adds skeleton-horse-type traps to other mobs.",
+  "fml.menu.mods.info.description.moretraps": "Adds skeleton-horse-type traps to other mobs.",
+
+  "message.moretraps.go_modrinth": "View on Modrinth",
+  "message.moretraps.install_yacl": "Install Yet Another Config Lib to access mod options",
+
+  "option.moretraps.general": "General",
+  "option.moretraps.general.enabled": "Enabled",
+  "option.moretraps.general.trapRange": "Trap Range",
+  "option.moretraps.general.trapRange.tooltip": "Distance at which traps will activate",
+
+  "screen.moretraps.options": "MoreTraps Options",
+
+  "option.moretraps.traps": "Traps",
+  "option.moretraps.trapGroup": "Trap %d",
+  "option.moretraps.trapGroup.sourceId": "Source Entity",
+  "option.moretraps.trapGroup.sourceId.tooltip": "The ID of the entity to trigger the trap",
+  "option.moretraps.trapGroup.spawnId": "Spawn Entity",
+  "option.moretraps.trapGroup.spawnId.tooltip": "The ID of the entity spawned when the trap is activated",
+  "option.moretraps.trapGroup.passengerId": "Passenger Entity",
+  "option.moretraps.trapGroup.passengerId.tooltip": "The ID of the entity riding the Spawn Entity (optional)",
+  "option.moretraps.trapGroup.passengerOnSource": "Passenger on Source",
+  "option.moretraps.trapGroup.passengerOnSource.tooltip": "Whether to spawn a passenger on the Source Entity",
+  "option.moretraps.trapGroup.invertRiding": "Invert Riding",
+  "option.moretraps.trapGroup.invertRiding.tooltip": "Whether to make the Source/Spawn entities ride their Passenger Entities",
+  "option.moretraps.trapGroup.chance": "Spawn Chance",
+  "option.moretraps.trapGroup.chance.tooltip": "The chance for a spawned entity to be a trap",
+  "option.moretraps.trapGroup.spawnNum": "Spawn Number",
+  "option.moretraps.trapGroup.spawnNum.tooltip": "The number of entities to spawn when the trap is triggered",
+  "option.moretraps.trapGroup.effectNum": "Effect Value",
+  "option.moretraps.trapGroup.effectNum.tooltip": "The sum of status effects and their amplifiers applied to trap entities when the trap is triggered",
+  "option.moretraps.trapGroup.add": "Add Trap",
+  "option.moretraps.trapGroup.delete": "Delete"
+}
