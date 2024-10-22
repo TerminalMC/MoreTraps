@@ -24,6 +24,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
@@ -71,6 +72,25 @@ public class MoreTraps {
             if (id != null && BuiltInRegistries.ENTITY_TYPE.containsKey(id)) {
                 EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(id);
                 if (isMob(entityType)) trap.passengerType = (EntityType<Mob>)entityType;
+            }
+        }
+    }
+
+    public static void chanceAddTag(Entity entity) {
+        if (!Config.get().options.enabled) return;
+        if (!(entity instanceof Mob mob)) return;
+        if (mob.getTags().contains(MoreTraps.TRAP_SPAWN_TAG)) return;
+        if (mob.getTags().contains(MoreTraps.TRAP_SOURCE_TAG)) return;
+
+        if (!Config.get().options.allowInstant && entity.level().hasNearbyAlivePlayer(
+                entity.getX(), entity.getY(), entity.getZ(), Config.get().options.activationRange + 1)) return;
+
+        @Nullable Trap trap = Trap.getByType(entity.getType());
+        if (trap != null && entity.getRandom().nextFloat() < trap.chance) {
+            mob.addTag(MoreTraps.TRAP_SOURCE_TAG);
+            if (Config.get().options.debugMode) {
+                MoreTraps.LOG.info("Added TRAP_SOURCE_TAG to {} at {}",
+                        mob.getName().getString(), mob.getOnPos());
             }
         }
     }

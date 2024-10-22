@@ -17,12 +17,8 @@
 package dev.terminalmc.moretraps.mixin;
 
 import dev.terminalmc.moretraps.MoreTraps;
-import dev.terminalmc.moretraps.config.Config;
-import dev.terminalmc.moretraps.config.Trap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -37,16 +33,6 @@ public class MixinServerLevel {
      */
     @Inject(method = "addFreshEntity", at = @At("HEAD"))
     private void onSpawnEntity(Entity entity, CallbackInfoReturnable<Boolean> cir) {
-        if (!Config.get().options.enabled) return;
-        if (!(entity instanceof Mob mob)) return;
-        if (mob.getTags().contains(MoreTraps.TRAP_SPAWN_TAG)) return;
-        if (mob.getTags().contains(MoreTraps.TRAP_SOURCE_TAG)) return;
-
-        @Nullable Trap trap = Trap.getByType(entity.getType());
-        if (trap != null && entity.getRandom().nextFloat() < trap.chance) {
-            mob.addTag(MoreTraps.TRAP_SOURCE_TAG);
-            MoreTraps.LOG.debug("Added TRAP_SOURCE_TAG to {} at {}",
-                    mob.getName().getString(), mob.getOnPos());
-        }
+        MoreTraps.chanceAddTag(entity);
     }
 }

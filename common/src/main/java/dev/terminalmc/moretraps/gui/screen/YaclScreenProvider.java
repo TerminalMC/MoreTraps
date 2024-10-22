@@ -60,16 +60,63 @@ public class YaclScreenProvider {
                         .yesNoFormatter())
                 .build());
 
+        general.option(Option.<Boolean>createBuilder()
+                .name(localized("option", "general.debugMode"))
+                .description((val) -> OptionDescription.of(
+                        localized("option", "general.debugMode.tooltip")))
+                .binding(Config.Options.defaultDebugMode,
+                        () -> options.debugMode,
+                        val -> options.debugMode = val)
+                .controller(option -> BooleanControllerBuilder.create(option)
+                        .coloured(true)
+                        .yesNoFormatter())
+                .build());
+
         general.option(Option.<Float>createBuilder()
                 .name(localized("option", "general.trapRange"))
                 .description(OptionDescription.of(
                         localized("option", "general.trapRange.tooltip")))
-                .binding(Config.Options.defaultTrapRange,
-                        () -> options.trapRange,
-                        val -> options.trapRange = val)
+                .binding(Config.Options.defaultActivationRange,
+                        () -> options.activationRange,
+                        val -> options.activationRange = val)
                 .controller(option -> FloatSliderControllerBuilder.create(option)
                         .range(1F, 50F)
                         .step(1F))
+                .build());
+
+        general.option(Option.<Boolean>createBuilder()
+                .name(localized("option", "general.allowInstant"))
+                .description((val) -> OptionDescription.of(
+                        localized("option", "general.allowInstant.tooltip")))
+                .binding(Config.Options.defaultAllowInstant,
+                        () -> options.allowInstant,
+                        val -> options.allowInstant = val)
+                .controller(option -> BooleanControllerBuilder.create(option)
+                        .coloured(true)
+                        .yesNoFormatter())
+                .build());
+
+        general.option(Option.<Integer>createBuilder()
+                .name(localized("option", "general.effectDuration"))
+                .description(OptionDescription.of(
+                        localized("option", "general.effectDuration.tooltip")))
+                .binding(Config.Options.defaultEffectDuration,
+                        () -> options.effectDuration,
+                        val -> options.effectDuration = val)
+                .controller(option -> IntegerFieldControllerBuilder.create(option)
+                        .range(-1, 86400))
+                .build());
+
+        general.option(Option.<Boolean>createBuilder()
+                .name(localized("option", "general.showParticles"))
+                .description((val) -> OptionDescription.of(
+                        localized("option", "general.showParticles.tooltip")))
+                .binding(Config.Options.defaultShowParticles,
+                        () -> options.showParticles,
+                        val -> options.showParticles = val)
+                .controller(option -> BooleanControllerBuilder.create(option)
+                        .coloured(true)
+                        .yesNoFormatter())
                 .build());
 
         ConfigCategory.Builder traps = ConfigCategory.createBuilder()
@@ -84,6 +131,7 @@ public class YaclScreenProvider {
             i++;
             OptionGroup.Builder trapGroup = OptionGroup.createBuilder();
             trapGroup.name(localized("option", "trapGroup", i));
+            trapGroup.collapsed(true);
 
             trapGroup.option(Option.<String>createBuilder()
                     .name(localized("option", "trapGroup.sourceId"))

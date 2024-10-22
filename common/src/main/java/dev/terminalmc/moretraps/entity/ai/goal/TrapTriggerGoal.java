@@ -20,6 +20,7 @@ import dev.terminalmc.moretraps.MoreTraps;
 import dev.terminalmc.moretraps.config.Config;
 import dev.terminalmc.moretraps.config.Trap;
 import dev.terminalmc.moretraps.mixin.accessor.MobAccessor;
+import net.minecraft.world.effect.MobEffects;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -45,12 +46,16 @@ public class TrapTriggerGoal extends Goal {
     @Override
     public boolean canUse() {
         return entity.level().hasNearbyAlivePlayer(
-                entity.getX(), entity.getY(), entity.getZ(), Config.get().options.trapRange);
+                entity.getX(), entity.getY(), entity.getZ(), Config.get().options.activationRange);
     }
 
     @Override
     public void tick() {
-//        entity.setGlowingTag(false);
+        if (Config.get().options.debugMode) {
+            entity.removeEffect(MobEffects.GLOWING);
+            MoreTraps.LOG.info("Trap triggered for {} at {}",
+                    entity.getName().getString(), entity.getOnPos());
+        }
         ((MobAccessor)entity).getGoalSelector().removeGoal(this);
 
         if (!Config.get().options.enabled) return;
@@ -121,24 +126,31 @@ public class TrapTriggerGoal extends Goal {
         if (newEntity != null) {
             newEntity.finalizeSpawn(world, localDiff, MobSpawnType.TRIGGERED, null);
             newEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
-            applyEffects(newEntity, effectNum);
+            if (effectNum > 0) applyEffects(newEntity, effectNum);
             newEntity.addTag(MoreTraps.TRAP_SPAWN_TAG);
         }
         return newEntity;
     }
 
     private void applyEffects(Mob mob, int effectNum) {
+        Config.Options options = Config.get().options;
         List<MobEffect> effects = BuiltInRegistries.MOB_EFFECT.stream().collect(
                 Collectors.filtering(MobEffect::isBeneficial, Collectors.toList()));
+        StringBuilder effectsBuilder = new StringBuilder("Applied effects to ");
+        effectsBuilder.append(mob.getName().getString());
 
         while (effectNum > 0) {
             MobEffect effect = effects.remove(entity.getRandom().nextInt(effects.size()));
             int amplifier = entity.getRandom().nextInt(effectNum);
             effectNum -= amplifier + 1;
-            mob.addEffect(new MobEffectInstance(
-                    BuiltInRegistries.MOB_EFFECT.wrapAsHolder(effect), -1, amplifier));
-            MoreTraps.LOG.debug("Added effect {} at level {}", effect.getDisplayName().getString(), amplifier + 1);
+            mob.addEffect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(effect),
+                    options.effectDuration == -1 ? -1 : options.effectDuration * 20,
+                    amplifier, false, options.showParticles));
+            effectsBuilder.append("; ");
+            effectsBuilder.append(effect.getDisplayName().getString());
+            effectsBuilder.append(" ");
+            effectsBuilder.append(amplifier + 1);
         }
-        MoreTraps.LOG.debug("Finished adding effects");
+        if (options.debugMode) MoreTraps.LOG.info(effectsBuilder.toString());
     }
 }

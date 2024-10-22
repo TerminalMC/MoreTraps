@@ -43,11 +43,23 @@ public class Config {
         public static final boolean defaultEnabled = true;
         public boolean enabled = defaultEnabled;
 
-        public static final float defaultTrapRange = 10F;
-        public float trapRange = defaultTrapRange;
+        public static final boolean defaultDebugMode = false;
+        public boolean debugMode = defaultDebugMode;
+
+        public static final float defaultActivationRange = 10F;
+        public float activationRange = defaultActivationRange;
+
+        public static final boolean defaultAllowInstant = false;
+        public boolean allowInstant = defaultAllowInstant;
+
+        public static final int defaultEffectDuration = -1;
+        public int effectDuration = defaultEffectDuration;
+
+        public static final boolean defaultShowParticles = false;
+        public boolean showParticles = defaultShowParticles;
 
         public static final List<Trap> defaultTrapEntities = List.of(
-                new Trap("minecraft:pig", "minecraft:pig", "minecraft:zombified_piglin", true, false, 0.1F, 3, 4)
+                new Trap("minecraft:pig", "minecraft:pig", "minecraft:zombified_piglin", true, false, 0.05F, 3, 4)
         );
         public List<Trap> traps = defaultTrapEntities;
     }

@@ -20,6 +20,8 @@ import dev.terminalmc.moretraps.MoreTraps;
 import dev.terminalmc.moretraps.config.Config;
 import dev.terminalmc.moretraps.entity.ai.goal.TrapTriggerGoal;
 import dev.terminalmc.moretraps.mixin.accessor.MobAccessor;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.entity.EntityAccess;
 import net.minecraft.world.level.entity.PersistentEntitySectionManager;
@@ -46,9 +48,11 @@ public class MixinPersistentEntitySectionManager<T extends EntityAccess> {
 
         if (mob.getTags().contains(MoreTraps.TRAP_SOURCE_TAG)) {
             ((MobAccessor)mob).getGoalSelector().addGoal(1, new TrapTriggerGoal(mob));
-//            mob.setGlowingTag(true);
-            MoreTraps.LOG.debug("Added TrapTriggerGoal to tagged {} at {}",
-                    mob.getName().getString(), mob.getOnPos());
+            if (Config.get().options.debugMode) {
+                mob.addEffect(new MobEffectInstance(MobEffects.GLOWING, 2400, 0, false, false));
+                MoreTraps.LOG.info("Added TrapTriggerGoal to tagged {} at {}",
+                        mob.getName().getString(), mob.getOnPos());
+            }
         }
     }
 }
