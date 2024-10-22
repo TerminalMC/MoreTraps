@@ -59,7 +59,8 @@ public class Config {
         public boolean showParticles = defaultShowParticles;
 
         public static final List<Trap> defaultTrapEntities = List.of(
-                new Trap("minecraft:pig", "minecraft:pig", "minecraft:zombified_piglin", true, false, 0.05F, 3, 4)
+                new Trap("minecraft:pig", "minecraft:pig", "minecraft:zombified_piglin", true, false, 0.05F, 3, 4),
+                new Trap("minecraft:horse", "minecraft:horse", "minecraft:pillager", true, false, 0.05F, 2, 0)
         );
         public List<Trap> traps = defaultTrapEntities;
     }

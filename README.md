@@ -26,7 +26,9 @@ This mod allows you to create your own traps with custom distance, size, spawn c
 
 Recommended for people who enjoy being jumpscared by seemingly harmless creatures.
 
-By default, the only trap active is the pig (zombified piglin) trap, with 5% chance.
+By default, there are two traps:
+1. Pig (Zombified Piglin), 5% chance.
+2. Horse (Pillager), 5% chance.
 
 <table style="width:100%;">
   <tr>
