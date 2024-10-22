@@ -45,7 +45,8 @@ public class MixinWorldGenRegion {
         @Nullable Trap trap = Trap.getByType(entity.getType());
         if (trap != null && entity.getRandom().nextFloat() < trap.chance) {
             mob.addTag(MoreTraps.TRAP_SOURCE_TAG);
-            MoreTraps.LOG.debug("Added TRAP_SOURCE_TAG to {}", mob.getName().getString());
+            MoreTraps.LOG.debug("Added TRAP_SOURCE_TAG to {} at {}",
+                    mob.getName().getString(), mob.getOnPos());
         }
     }
 }

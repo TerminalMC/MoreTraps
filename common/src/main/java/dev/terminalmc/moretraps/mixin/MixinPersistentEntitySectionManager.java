@@ -31,23 +31,24 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PersistentEntitySectionManager.class)
 public class MixinPersistentEntitySectionManager<T extends EntityAccess> {
     /**
-     * Works with {@link MixinWorldGenRegion} by reading tags of deserialized
-     * entities and setting a {@link TrapTriggerGoal} where the trap source tag
-     * is found.
+     * Works with {@link MixinWorldGenRegion} and {@link MixinServerLevel} by
+     * reading tags of added entities and setting a {@link TrapTriggerGoal}
+     * where the trap source tag is found.
      */
     @Inject(method = "addEntity", at = @At("HEAD"))
     private void onAddEntity(T entity, boolean existing, CallbackInfoReturnable<Boolean> cir) {
         if (!Config.get().options.enabled) return;
         if (!(entity instanceof Mob mob)) return;
         if (mob.getTags().contains(MoreTraps.TRAP_SPAWN_TAG)) return;
+
         if (((MobAccessor)mob).getGoalSelector().getAvailableGoals().stream()
                 .anyMatch(goal -> goal.getGoal() instanceof TrapTriggerGoal)) return;
 
         if (mob.getTags().contains(MoreTraps.TRAP_SOURCE_TAG)) {
             ((MobAccessor)mob).getGoalSelector().addGoal(1, new TrapTriggerGoal(mob));
 //            mob.setGlowingTag(true);
-            MoreTraps.LOG.debug("Added TrapTriggerGoal to tagged {}",
-                    mob.getName().getString());
+            MoreTraps.LOG.debug("Added TrapTriggerGoal to tagged {} at {}",
+                    mob.getName().getString(), mob.getOnPos());
         }
     }
 }

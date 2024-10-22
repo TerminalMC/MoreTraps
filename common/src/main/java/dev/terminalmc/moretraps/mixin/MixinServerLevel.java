@@ -19,8 +19,6 @@ package dev.terminalmc.moretraps.mixin;
 import dev.terminalmc.moretraps.MoreTraps;
 import dev.terminalmc.moretraps.config.Config;
 import dev.terminalmc.moretraps.config.Trap;
-import dev.terminalmc.moretraps.entity.ai.goal.TrapTriggerGoal;
-import dev.terminalmc.moretraps.mixin.accessor.MobAccessor;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -33,24 +31,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ServerLevel.class)
 public class MixinServerLevel {
     /**
-     * Handles most non-generated mob spawns by applying a tag and setting a
-     * {@link TrapTriggerGoal}.
+     * Handles most non-generated mob spawns by applying a tag on entity spawn,
+     * which is subsequently read by
+     * {@link MixinPersistentEntitySectionManager}.
      */
     @Inject(method = "addFreshEntity", at = @At("HEAD"))
     private void onSpawnEntity(Entity entity, CallbackInfoReturnable<Boolean> cir) {
         if (!Config.get().options.enabled) return;
         if (!(entity instanceof Mob mob)) return;
         if (mob.getTags().contains(MoreTraps.TRAP_SPAWN_TAG)) return;
-        if (((MobAccessor)mob).getGoalSelector().getAvailableGoals().stream()
-                .anyMatch(goal -> goal.getGoal() instanceof TrapTriggerGoal)) return;
+        if (mob.getTags().contains(MoreTraps.TRAP_SOURCE_TAG)) return;
 
         @Nullable Trap trap = Trap.getByType(entity.getType());
         if (trap != null && entity.getRandom().nextFloat() < trap.chance) {
             mob.addTag(MoreTraps.TRAP_SOURCE_TAG);
-            ((MobAccessor)mob).getGoalSelector().addGoal(1, new TrapTriggerGoal(mob));
-//            mob.setGlowingTag(true);
-            MoreTraps.LOG.debug("Added TRAP_SOURCE_TAG and TrapTriggerGoal to {}",
-                    mob.getName().getString());
+            MoreTraps.LOG.debug("Added TRAP_SOURCE_TAG to {} at {}",
+                    mob.getName().getString(), mob.getOnPos());
         }
     }
 }
