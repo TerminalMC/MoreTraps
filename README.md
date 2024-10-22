@@ -38,6 +38,14 @@ By default, the only trap active is the pig (zombified piglin) trap, with 10% ch
 
 #### Dependencies
 
+##### Server
+
+Fabric: [Fabric API](https://modrinth.com/mod/P7dR8mSH/)
+
+NeoForge: None
+
+##### Singleplayer
+
 Fabric: [Fabric API](https://modrinth.com/mod/P7dR8mSH/), [ModMenu](https://modrinth.com/mod/mOgUt4GM), [YACL](https://modrinth.com/mod/1eAoo2KR)
 
 NeoForge: [YACL](https://modrinth.com/mod/1eAoo2KR)
