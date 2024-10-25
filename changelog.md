@@ -1,1 +1,1 @@
-- Initial beta release
+- Add permission restriction for commands

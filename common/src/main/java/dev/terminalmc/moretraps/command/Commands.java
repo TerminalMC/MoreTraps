@@ -31,6 +31,7 @@ public class Commands<S> extends CommandDispatcher<S> {
     public void register(CommandDispatcher<S> dispatcher, CommandBuildContext buildContext,
                          net.minecraft.commands.Commands.CommandSelection selection) {
         dispatcher.register((LiteralArgumentBuilder<S>)literal(MoreTraps.MOD_ID)
+                .requires((sourceStack) -> sourceStack.hasPermission(2))
                 .then(literal("enable")
                         .executes(ctx -> {
                             MutableComponent msg = MoreTraps.PREFIX.copy();
