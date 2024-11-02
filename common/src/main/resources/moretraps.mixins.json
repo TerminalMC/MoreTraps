@@ -8,10 +8,10 @@
     "MixinPersistentEntitySectionManager",
     "MixinServerLevel",
     "MixinWorldGenRegion",
-    "accessor.MobAccessor",
-    "accessor.YACLScreenAccessor"
+    "accessor.MobAccessor"
   ],
   "client": [
+    "accessor.YACLScreenAccessor"
   ],
   "server": [
   ],
