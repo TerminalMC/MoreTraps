@@ -1,1 +1,1 @@
-- Add permission restriction for commands
+- Move YACL accessor to client mixins
