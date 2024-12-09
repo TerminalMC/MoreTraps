@@ -39,7 +39,7 @@ public class MixinPersistentEntitySectionManager<T extends EntityAccess> {
      */
     @Inject(method = "addEntity", at = @At("HEAD"))
     private void onAddEntity(T entity, boolean existing, CallbackInfoReturnable<Boolean> cir) {
-        if (!Config.get().options.enabled) return;
+        if (!Config.options().enabled) return;
         if (!(entity instanceof Mob mob)) return;
         if (mob.getTags().contains(MoreTraps.TRAP_SPAWN_TAG)) return;
 
@@ -48,7 +48,7 @@ public class MixinPersistentEntitySectionManager<T extends EntityAccess> {
 
         if (mob.getTags().contains(MoreTraps.TRAP_SOURCE_TAG)) {
             ((MobAccessor)mob).getGoalSelector().addGoal(1, new TrapTriggerGoal(mob));
-            if (Config.get().options.debugMode) {
+            if (Config.options().debugMode) {
                 mob.addEffect(new MobEffectInstance(MobEffects.GLOWING, 2400, 0, false, false));
                 MoreTraps.LOG.info("Added TrapTriggerGoal to tagged {} at {}",
                         mob.getName().getString(), mob.getOnPos());

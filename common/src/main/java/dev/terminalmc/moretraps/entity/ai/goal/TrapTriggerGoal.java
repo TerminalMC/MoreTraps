@@ -46,19 +46,19 @@ public class TrapTriggerGoal extends Goal {
     @Override
     public boolean canUse() {
         return entity.level().hasNearbyAlivePlayer(
-                entity.getX(), entity.getY(), entity.getZ(), Config.get().options.activationRange);
+                entity.getX(), entity.getY(), entity.getZ(), Config.options().activationRange);
     }
 
     @Override
     public void tick() {
-        if (Config.get().options.debugMode) {
+        if (Config.options().debugMode) {
             entity.removeEffect(MobEffects.GLOWING);
             MoreTraps.LOG.info("Trap triggered for {} at {}",
                     entity.getName().getString(), entity.getOnPos());
         }
         ((MobAccessor)entity).getGoalSelector().removeGoal(this);
 
-        if (!Config.get().options.enabled) return;
+        if (!Config.options().enabled) return;
         @Nullable Trap trap = Trap.getByType(this.entity.getType());
         if (trap == null) return;
         boolean flip = trap.invertRiding;
@@ -133,7 +133,7 @@ public class TrapTriggerGoal extends Goal {
     }
 
     private void applyEffects(Mob mob, int effectNum) {
-        Config.Options options = Config.get().options;
+        Config.Options options = Config.options();
         List<MobEffect> effects = BuiltInRegistries.MOB_EFFECT.stream().collect(
                 Collectors.filtering(MobEffect::isBeneficial, Collectors.toList()));
         StringBuilder effectsBuilder = new StringBuilder("Applied effects to ");

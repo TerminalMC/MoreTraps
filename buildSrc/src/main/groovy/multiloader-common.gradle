@@ -1,11 +1,10 @@
 plugins {
     id("java-library")
     id("maven-publish")
-    id("net.neoforged.licenser")
 }
 
 base {
-    archivesName = "${mod_id}-${project.name}-${minecraft_version}"
+    archivesName = "${mod_id}-${project.name}"
 }
 
 java {
@@ -43,6 +42,10 @@ repositories {
         name = "Modrinth"
         url = "https://api.modrinth.com/maven"
     }
+    maven {
+        name = "isXander"
+        url = "https://maven.isxander.dev/releases"
+    }
 }
 
 // Declare capabilities on the outgoing configurations.
@@ -59,13 +62,13 @@ repositories {
 }
 
 sourcesJar {
-    from(rootProject.file("LICENSE")) {
+    from(rootProject.file("LICENSE.txt")) {
         rename { "${it}_${mod_name}" }
     }
 }
 
 jar {
-    from(rootProject.file("LICENSE")) {
+    from(rootProject.file("LICENSE.txt")) {
         rename { "${it}_${mod_name}" }
     }
 
@@ -121,22 +124,12 @@ processResources {
             // Dependencies
             "yacl_versions_fabric_list": asJsonList(yacl_versions_fabric),
             "yacl_versions_neoforge": yacl_versions_neoforge,
-            "modmenu_versions_fabric_list": asJsonList(modmenu_versions),
+            "modmenu_versions_fabric_list": asJsonList(modmenu_versions_fabric),
     ]
-    filesMatching(["pack.mcmeta", "*.mod.json", "META-INF/*mods.toml", "*.mixins.json"]) {
+    filesMatching(["pack.mcmeta", "*.mod.json", "META-INF/*mods.toml", "*.mixins.json", "assets/"+mod_id+"/lang/*.json"]) {
         expand expandProps
     }
     inputs.properties(expandProps)
-}
-
-license {
-    include '**/*.java' // Apply license header ONLY to Java files
-    header = rootProject.file("NOTICE")
-    properties {
-        project_name = mod_name
-        owner_name = mod_owner
-        year = java.time.LocalDate.now().getYear().toString()
-    }
 }
 
 publishing {

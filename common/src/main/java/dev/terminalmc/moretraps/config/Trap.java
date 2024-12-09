@@ -73,7 +73,7 @@ public class Trap {
     }
 
     public static @Nullable Trap getByType(EntityType<?> type) {
-        for (Trap trap : Config.get().options.traps) {
+        for (Trap trap : Config.options().traps) {
             if (trap.sourceType != null && trap.sourceType.equals(type)) {
                 return trap;
             }

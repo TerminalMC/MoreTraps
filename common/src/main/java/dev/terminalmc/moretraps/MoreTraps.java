@@ -77,18 +77,18 @@ public class MoreTraps {
     }
 
     public static void chanceAddTag(Entity entity) {
-        if (!Config.get().options.enabled) return;
+        if (!Config.options().enabled) return;
         if (!(entity instanceof Mob mob)) return;
         if (mob.getTags().contains(MoreTraps.TRAP_SPAWN_TAG)) return;
         if (mob.getTags().contains(MoreTraps.TRAP_SOURCE_TAG)) return;
 
-        if (!Config.get().options.allowInstant && entity.level().hasNearbyAlivePlayer(
-                entity.getX(), entity.getY(), entity.getZ(), Config.get().options.activationRange + 1)) return;
+        if (!Config.options().allowInstant && entity.level().hasNearbyAlivePlayer(
+                entity.getX(), entity.getY(), entity.getZ(), Config.options().activationRange + 1)) return;
 
         @Nullable Trap trap = Trap.getByType(entity.getType());
         if (trap != null && entity.getRandom().nextFloat() < trap.chance) {
             mob.addTag(MoreTraps.TRAP_SOURCE_TAG);
-            if (Config.get().options.debugMode) {
+            if (Config.options().debugMode) {
                 MoreTraps.LOG.info("Added TRAP_SOURCE_TAG to {} at {}",
                         mob.getName().getString(), mob.getOnPos());
             }

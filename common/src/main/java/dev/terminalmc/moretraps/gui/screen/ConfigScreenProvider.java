@@ -17,11 +17,9 @@
 package dev.terminalmc.moretraps.gui.screen;
 
 import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.MultiLineTextWidget;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
-import net.minecraft.client.gui.screens.options.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 
@@ -38,16 +36,18 @@ public class ConfigScreenProvider {
         try {
             return YaclScreenProvider.getConfigScreen(parent);
         } catch (NoClassDefFoundError ignored) {
-            return new BackupScreen(parent, "install_yacl", "https://modrinth.com/mod/1eAoo2KR");
+            return new BackupScreen(parent, "installYacl", "https://modrinth.com/mod/1eAoo2KR");
         }
     }
 
-    static class BackupScreen extends OptionsSubScreen {
+    static class BackupScreen extends Screen {
+        private final Screen parent;
         private final String modKey;
         private final String modUrl;
 
         public BackupScreen(Screen parent, String modKey, String modUrl) {
-            super(parent, Minecraft.getInstance().options, localized("name"));
+            super(localized("name"));
+            this.parent = parent;
             this.modKey = modKey;
             this.modUrl = modUrl;
         }
@@ -62,11 +62,11 @@ public class ConfigScreenProvider {
             messageWidget.setCentered(true);
             addRenderableWidget(messageWidget);
 
-            Button openLinkButton = Button.builder(localized("message", "go_modrinth"),
+            Button openLinkButton = Button.builder(localized("message", "viewModrinth"),
                             (button) -> minecraft.setScreen(new ConfirmLinkScreen(
                                     (open) -> {
                                         if (open) Util.getPlatform().openUri(modUrl);
-                                        minecraft.setScreen(lastScreen);
+                                        minecraft.setScreen(parent);
                                     }, modUrl, true)))
                     .pos(width / 2 - 120, height / 2)
                     .size(115, 20)
@@ -80,8 +80,5 @@ public class ConfigScreenProvider {
                     .build();
             addRenderableWidget(exitButton);
         }
-
-        @Override
-        protected void addOptions() {}
     }
 }
