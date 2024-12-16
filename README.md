@@ -1,5 +1,9 @@
 <div align="center"><center>
 
+## Archival Notice
+
+This project will no longer receive normal updates, but requests may still be considered.
+
 <img alt="Icon" width=100 src="https://raw.githubusercontent.com/TerminalMC/MoreTraps/HEAD/common/src/main/resources/assets/moretraps/icon.png">
 
 ## MoreTraps
